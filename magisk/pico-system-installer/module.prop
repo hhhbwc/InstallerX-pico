@@ -1,0 +1,6 @@
+id=installerx_pico_system
+name=InstallerX PICO System Installer
+version=26.10-pico
+versionCode=100103004
+author=hhhbwc, InstallerX Revived contributors
+description=Systemless replacement of the PICO 4 package installer with InstallerX PICO (com.android.packageinstaller, versionCode 100103004). Hides the stock PicoPackageInstaller. Requires Magisk and PICO 4 / Android 10.

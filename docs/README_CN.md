@@ -116,6 +116,14 @@ gpr.key=YOUR_PERSONAL_ACCESS_TOKEN
 
 详见系统集成文档：https://wxxsfxyzm.github.io/InstallerX-Revived-Website/zh/guide/system-integration
 
+#### PICO 4 系统安装器模块（本 fork）
+
+本 fork 提供了一个可直接刷入的 Magisk 模块，在 PICO 4（A8110，Android 10）上把 InstallerX PICO
+放到 `/system/priv-app/PackageInstaller`，并隐藏 stock `PicoPackageInstaller`，无需 Shizuku。
+模块源码、构建脚本和验证命令见 [PICO 系统安装器](pico-system-installer.md)。
+
+> 仅适用于 PICO 4 / Android 10；刷入前请确认 versionCode 与回滚方式。
+
 ## 本地化
 
 欢迎通过 [Weblate](https://hosted.weblate.org/engage/installerx-revived/) 参与翻译。

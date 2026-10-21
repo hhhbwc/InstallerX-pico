@@ -116,6 +116,16 @@ This is a high-risk advanced workflow. The short version is: use Core Patch to o
 
 See the system integration guide for details: https://wxxsfxyzm.github.io/InstallerX-Revived-Website/guide/system-integration
 
+#### PICO 4 system installer module (this fork)
+
+This fork ships a ready-to-flash Magisk module that makes InstallerX PICO the active system package
+installer on PICO 4 (A8110, Android 10). It overlays
+`/system/priv-app/PackageInstaller/PackageInstaller.apk` and hides the stock
+`PicoPackageInstaller`; no Shizuku is required. See
+[PICO system installer](pico-system-installer.md) for source, build steps, and verification.
+
+> PICO 4 / Android 10 only. Check the versionCode and rollback steps before flashing.
+
 ## Localization
 
 Help translate InstallerX Revived on Weblate:
