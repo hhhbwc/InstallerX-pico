@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.rosan.installer.core.env.AppConfig
 import com.rosan.installer.domain.session.repository.InstallerSessionRepository
 import com.rosan.installer.ui.page.main.installer.InstallerStage
 import com.rosan.installer.ui.page.main.installer.InstallerViewAction
@@ -123,6 +124,7 @@ fun DialogPage(session: InstallerSessionRepository, viewModel: InstallerViewMode
 
                 PositionDialog(
                     useBlur = useBlur,
+                    embedded = AppConfig.IS_PICO,
                     onDismissRequest = {
                         val currentUiState = viewModel.uiState.value
                         val currentStage = currentUiState.stage

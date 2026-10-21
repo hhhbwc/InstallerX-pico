@@ -57,7 +57,11 @@ class AppSettingsRepositoryImpl(
         AppPreferences(
             authorizer = Authorizer.fromValueOrDefault(
                 prefs[AppDataStore.AUTHORIZER]
-                    ?: if (capabilityProvider.isSystemApp) Authorizer.None.value else Authorizer.Shizuku.value,
+                    ?: when {
+                        capabilityProvider.isSystemApp -> Authorizer.None.value
+                        AppConfig.IS_PICO -> Authorizer.Root.value
+                        else -> Authorizer.Shizuku.value
+                    },
             ),
             alwaysUseRootInSystem = prefs[AppDataStore.ALWAYS_USE_ROOT_IN_SYSTEM] ?: false,
             customizeAuthorizer = prefs[AppDataStore.CUSTOMIZE_AUTHORIZER] ?: "",

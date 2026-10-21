@@ -53,6 +53,10 @@ class SourceResolver(
     private val cacheDirectory: String,
     private val progressFlow: MutableSharedFlow<ProgressEntity>,
 ) {
+    private companion object {
+        const val PICO_FILE_PATH_EXTRA = "FilePath"
+    }
+
     private val closeables = mutableListOf<Closeable>()
 
     fun getTrackedCloseables(): List<Closeable> = closeables
@@ -110,6 +114,16 @@ class SourceResolver(
     }
 
     private fun extractUris(intent: Intent): List<Uri> {
+        // PICO FileManager puts a placeholder/directory URI in data and the real file path here.
+        val picoFilePath = intent.getStringExtra(PICO_FILE_PATH_EXTRA)
+        if (!picoFilePath.isNullOrBlank()) {
+            val picoFile = File(picoFilePath)
+            if (picoFile.isFile) {
+                Timber.d("PICO FilePath extra: %s", picoFilePath)
+                return listOf(Uri.fromFile(picoFile))
+            }
+        }
+
         val action = intent.action
         val uris = mutableListOf<Uri>()
 

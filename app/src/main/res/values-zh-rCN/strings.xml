@@ -1005,4 +1005,10 @@
     <string name="unarchive_action_app_settings">应用设置</string>
     <string name="installer_result_pending">已有安装任务正在进行，请等待结果后重试。</string>
     <string name="theme_settings_predictive_back_animation_aosp">AOSP</string>
+    <string name="pico_app_name">InstallerX PICO</string>
+    <string name="pico_launcher_title">InstallerX PICO 版</string>
+    <string name="pico_pick_apk">选择 APK 安装</string>
+    <string name="pico_settings">设置</string>
+    <string name="pico_supported_formats">支持 APK、APKS、APKM、XAPK 和 ZIP</string>
+    <string name="pico_pick_apk_hint">PICO 文件管理器无法传递可读文件 URI 时，请从这里选包。默认使用 Root 安装。</string>
 </resources>

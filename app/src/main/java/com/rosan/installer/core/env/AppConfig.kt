@@ -12,6 +12,8 @@ object AppConfig {
         else -> Level.UNSTABLE
     }
 
+    // This fork targets PICO 4 (Android 10), where Magisk Root is the expected authorizer.
+    const val IS_PICO = true
     const val OFFICIAL_PACKAGE_NAME = "com.rosan.installer.x.revived"
     val isDebug: Boolean = BuildConfig.DEBUG
     const val VERSION_NAME: String = BuildConfig.VERSION_NAME

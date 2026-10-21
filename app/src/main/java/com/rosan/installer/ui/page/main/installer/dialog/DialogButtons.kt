@@ -30,6 +30,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.unit.dp
+import com.rosan.installer.core.env.AppConfig
 import kotlinx.coroutines.delay
 
 @Composable
@@ -39,7 +40,11 @@ fun dialogButtons(id: String, content: (@Composable () -> List<DialogButton>)) =
         modifier = Modifier.clip(RoundedCornerShape(12.dp)),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        val single = if (buttons.size > 2) buttons.size % 2 else buttons.size
+        val single = when {
+            buttons.size > 2 -> buttons.size % 2
+            buttons.size == 2 && AppConfig.IS_PICO -> 0
+            else -> buttons.size
+        }
 
         // Render single buttons (top section)
         for (i in 0 until single) {

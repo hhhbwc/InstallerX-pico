@@ -1,5 +1,6 @@
 package com.rosan.installer.ui.page.main.installer.components
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +42,8 @@ import com.rosan.installer.ui.util.WindowBlurEffect
 fun PositionDialog(
     modifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties(),
+    fullScreen: Boolean = false,
+    embedded: Boolean = false,
     useBlur: Boolean = false,
     onDismissRequest: () -> Unit,
     shape: Shape = AlertDialogDefaults.shape,
@@ -67,7 +71,7 @@ fun PositionDialog(
     centerButton: @Composable (() -> Unit)? = null,
     rightButton: @Composable (() -> Unit)? = null,
 ) {
-    Dialog(onDismissRequest = onDismissRequest, properties = properties) {
+    val content: @Composable () -> Unit = {
         WindowBlurEffect(useBlur = useBlur)
         Box(
             modifier = Modifier
@@ -86,15 +90,29 @@ fun PositionDialog(
                     },
             ) {
                 Surface(
-                    modifier = modifier,
+                    modifier = when {
+                        fullScreen -> modifier.fillMaxSize()
+
+                        // Embedded has no dialog window to cap the platform width, so keep the
+                        // card to a phone-sized column inside the near-field panel.
+                        embedded -> modifier.widthIn(max = 520.dp)
+
+                        else -> modifier
+                    },
                     shape = shape,
                     color = containerColor,
                     tonalElevation = tonalElevation,
                 ) {
                     Box(
-                        modifier = Modifier
-                            .sizeIn(minWidth = MinWidth, maxHeight = MaxHeight)
-                            .padding(DialogPadding),
+                        modifier = if (fullScreen) {
+                            Modifier
+                                .fillMaxSize()
+                                .padding(DialogPadding)
+                        } else {
+                            Modifier
+                                .sizeIn(minWidth = MinWidth, maxHeight = MaxHeight)
+                                .padding(DialogPadding)
+                        },
                     ) {
                         // set the button always in bottom
                         var buttonHeightPx by remember {
@@ -220,6 +238,24 @@ fun PositionDialog(
                     }
                 }
             }
+        }
+    }
+
+    if (embedded) {
+        // PICO renders the card straight into the translucent activity window so the near-field
+        // panel stays transparent around it instead of showing a full-screen dialog scrim.
+        BackHandler(onBack = onDismissRequest)
+        content()
+    } else {
+        Dialog(
+            onDismissRequest = onDismissRequest,
+            properties = if (fullScreen) {
+                DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
+            } else {
+                properties
+            },
+        ) {
+            content()
         }
     }
 }

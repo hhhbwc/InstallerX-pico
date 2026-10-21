@@ -35,8 +35,12 @@ android {
         // Please change the applicationId to one that does not conflict with any official release.
         applicationId = project.findProperty("APP_ID") as String? ?: "com.rosan.installer.x.revived"
 
+        // PICO 4 runs Android 10 (API 29). Legacy storage keeps MediaStore APK URIs readable.
+        targetSdk = 29
+
         // Version control retrieved from git, with a build-plugin fallback when git is unavailable.
-        versionCode = project.getGitCommitCount()
+        versionCode = (project.findProperty("VERSION_CODE") as String?)?.toIntOrNull()
+            ?: project.getGitCommitCount()
         versionName = project.getBaseVersionName()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
