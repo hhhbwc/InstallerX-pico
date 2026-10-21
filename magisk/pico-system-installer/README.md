@@ -102,16 +102,19 @@ Magisk 版本），或通过 adb 在可连接时执行 `magisk --remove-modules`
 构建会产出 debug 签名的 APK（系统安装器不依赖签名与 stock 一致；stock 已被 `.replace` 隐藏）。
 
 ```bash
-# 在仓库根目录执行
+# 发布用：release 构建 + Preview flavor（CI 使用仓库 SIGNING_* secrets 签名）
+BUILD_TYPE=release VARIANT=Preview bash magisk/pico-system-installer/build.sh
+
+# 本地调试：debug 构建（输出 zip 名带 -debug）
 bash magisk/pico-system-installer/build.sh
 ```
 
 脚本会：
 
 1. 读取 `module.prop` 的 `version` / `versionCode`；
-2. 执行 `:app:assembleUnstableDebug -PAPP_ID=com.android.packageinstaller -PVERSION_CODE=<module.prop>`；
+2. 执行 `:app:assemble<flavor><buildType> -PAPP_ID=com.android.packageinstaller -PVERSION_CODE=<module.prop>`；
 3. 把 APK 复制到 `system/priv-app/PackageInstaller/PackageInstaller.apk`；
-4. 打包为 `magisk/pico-system-installer/dist/InstallerX-PICO-system-<version>-<versionCode>.zip`。
+4. 打包为 `magisk/pico-system-installer/dist/InstallerX-PICO-system-<version>-<versionCode>[-debug].zip`。
 
 可用环境变量覆盖：
 
@@ -119,6 +122,9 @@ bash magisk/pico-system-installer/build.sh
 VERSION_CODE=100103005 bash magisk/pico-system-installer/build.sh
 APP_ID=com.android.packageinstaller VARIANT=Unstable bash magisk/pico-system-installer/build.sh
 ```
+
+`BUILD_TYPE=release` 会走 R8/lint；如果没有 `keystore.properties` 或 CI 的 `SIGNING_*` secrets，
+Gradle 会回退到 debug 签名。正式发布建议使用仓库 signing secrets 构建，保证后续升级签名一致。
 
 > `VERSION_CODE` 必须大于当前固件 stock 安装器的 versionCode；否则 PackageManager 可能继续使用
 > stock。升级固件后如果 stock versionCode 变大，需要同步提高本模块的 `module.prop` versionCode。

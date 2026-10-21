@@ -17,19 +17,33 @@ MODULE_VERSION_CODE="$(read_prop versionCode)"
 VERSION_CODE="${VERSION_CODE:-$MODULE_VERSION_CODE}"
 APP_ID="${APP_ID:-com.android.packageinstaller}"
 VARIANT="${VARIANT:-Unstable}"
+BUILD_TYPE="${BUILD_TYPE:-debug}"
 
 if [ -z "$VERSION_CODE" ]; then
     echo "module.prop is missing versionCode" >&2
     exit 1
 fi
 
+case "$BUILD_TYPE" in
+    release|Release)
+        GRADLE_BUILD_TYPE="Release"
+        OUTPUT_TYPE="release"
+        ZIP_SUFFIX=""
+        ;;
+    debug|Debug|*)
+        GRADLE_BUILD_TYPE="Debug"
+        OUTPUT_TYPE="debug"
+        ZIP_SUFFIX="-debug"
+        ;;
+esac
+
 cd "$ROOT_DIR"
-./gradlew ":app:assemble${VARIANT}Debug" \
+./gradlew ":app:assemble${VARIANT}${GRADLE_BUILD_TYPE}" \
     -PAPP_ID="$APP_ID" \
     -PVERSION_CODE="$VERSION_CODE" \
     --no-configuration-cache
 
-APK_DIR="app/build/outputs/apk/$VARIANT/debug"
+APK_DIR="app/build/outputs/apk/$VARIANT/$OUTPUT_TYPE"
 APK_PATH="$(find "$APK_DIR" -maxdepth 1 -type f -name '*.apk' | head -n 1)"
 if [ -z "$APK_PATH" ]; then
     echo "APK not found in $APK_DIR; run the Gradle build first" >&2
@@ -40,7 +54,7 @@ mkdir -p "$MODULE_DIR/system/priv-app/PackageInstaller"
 cp "$APK_PATH" "$MODULE_DIR/system/priv-app/PackageInstaller/PackageInstaller.apk"
 
 mkdir -p "$MODULE_DIR/dist"
-ZIP_NAME="InstallerX-PICO-system-${VERSION_NAME}-${VERSION_CODE}.zip"
+ZIP_NAME="InstallerX-PICO-system-${VERSION_NAME}-${VERSION_CODE}${ZIP_SUFFIX}.zip"
 cd "$MODULE_DIR"
 rm -f "dist/$ZIP_NAME"
 
