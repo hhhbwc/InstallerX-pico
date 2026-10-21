@@ -32,7 +32,9 @@
 
 ## 构建
 
-需要 JDK 25、Android SDK 和可用的 Gradle Wrapper。
+需要 JDK 25、Android SDK 和可用的 Gradle Wrapper。Miuix snapshot 从 GitHub Packages
+分发，本地构建需要配置带 `read:packages` 权限的 `gpr.user` / `gpr.key`（详见
+[docs/README_CN.md](docs/README_CN.md#github-packages-认证)）；CI 使用自带的 `GITHUB_TOKEN`。
 
 ```bash
 # 普通 APK

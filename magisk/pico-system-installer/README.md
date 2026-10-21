@@ -96,8 +96,10 @@ Magisk 版本），或通过 adb 在可连接时执行 `magisk --remove-modules`
 
 ## 构建
 
-环境要求：JDK 25、Android SDK、Gradle Wrapper 可用。构建会产出 debug 签名的 APK（系统安装器不依赖
-签名与 stock 一致；stock 已被 `.replace` 隐藏）。
+环境要求：JDK 25、Android SDK、Gradle Wrapper 可用。Miuix snapshot 走 GitHub Packages，
+本地构建需要在 `~/.gradle/gradle.properties` 配置带 `read:packages` 权限的 `gpr.user` /
+`gpr.key`；仓库的 `PICO System Installer Module` workflow 使用 `GITHUB_TOKEN` 自动完成。
+构建会产出 debug 签名的 APK（系统安装器不依赖签名与 stock 一致；stock 已被 `.replace` 隐藏）。
 
 ```bash
 # 在仓库根目录执行

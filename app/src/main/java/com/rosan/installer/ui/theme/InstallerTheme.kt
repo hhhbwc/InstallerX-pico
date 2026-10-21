@@ -222,33 +222,20 @@ fun InstallerMiuixTheme(
 
         val style = when (paletteStyle) {
             PaletteStyle.TonalSpot -> MiuixPaletteStyle.TonalSpot
-
             PaletteStyle.Neutral -> MiuixPaletteStyle.Neutral
-
             PaletteStyle.Vibrant -> MiuixPaletteStyle.Vibrant
-
             PaletteStyle.Expressive -> MiuixPaletteStyle.Expressive
-
             PaletteStyle.Rainbow -> MiuixPaletteStyle.Rainbow
-
             PaletteStyle.FruitSalad -> MiuixPaletteStyle.FruitSalad
-
             PaletteStyle.Monochrome -> MiuixPaletteStyle.Monochrome
-
             PaletteStyle.Fidelity -> MiuixPaletteStyle.Fidelity
-
             PaletteStyle.Content -> MiuixPaletteStyle.Content
-
-            // Miuix 0.9.4 has no Cmf palette; the PICO build uses Material3 by default.
-            PaletteStyle.Cmf -> MiuixPaletteStyle.Expressive
+            PaletteStyle.Cmf -> MiuixPaletteStyle.Cmf
         }
 
         val colorSpecVersion = when (paletteStyle.effectiveSpec(colorSpec)) {
-            // 0.9.4 has no Spec2026; fall back to the newest available Miuix spec.
-            ThemeColorSpec.SPEC_2026 -> MiuixColorSpec.Spec2025
-
+            ThemeColorSpec.SPEC_2026 -> MiuixColorSpec.Spec2026
             ThemeColorSpec.SPEC_2025 -> MiuixColorSpec.Spec2025
-
             ThemeColorSpec.SPEC_2021 -> MiuixColorSpec.Spec2021
         }
 
