@@ -46,6 +46,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    lint {
+        // PICO 4 is Android 10 and this build is sideloaded as a system installer, not distributed
+        // through Play; the targetSdk 33 floor does not apply to this fork.
+        disable += "ExpiredTargetSdkVersion"
+    }
+
     signingConfigs {
         if (hasCustomSigning) {
             register("releaseCustom") {
